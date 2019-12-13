@@ -3,6 +3,7 @@ package com.mps.blindsec.utils;
 import com.mps.blindsec.model.User;
 import com.mps.blindsec.service.UserService;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,5 +80,15 @@ public class KeyUtils {
 		}
 
 		return hash.toString();
-	}
+    }
+
+    public static boolean deleteDirectory(File directory) {
+        File[] allContents = directory.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directory.delete();
+    }
 }

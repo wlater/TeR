@@ -72,12 +72,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean removeUser(Long UserId) throws IOException, InvalidPublicKeyException {
         Optional<User> optionalUser = userRepository.findById(UserId);
-        Path usergePath = Paths.get(optionalUser.get().getPublicKeyPath());
+        Path userPath = Paths.get(optionalUser.get().getPublicKeyPath());
 
         if (!optionalUser.isPresent())
             return false;
 
-        Files.deleteIfExists(usergePath);
+        KeyUtils.deleteDirectory(userPath.toFile());
         userRepository.delete(optionalUser.get());
         
         return true;

@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<Boolean> removeKey(@RequestParam("user_id") @NotNull Long userId){
+    public ResponseEntity<Boolean> removeUser(@RequestParam("user_id") @NotNull Long userId){
         try {
             return ResponseEntity.ok(userService.removeUser(userId));
         } catch (IOException ioe) {

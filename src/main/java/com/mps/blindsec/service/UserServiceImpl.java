@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
         Path userPath = storagePath.resolve(user.getId().toString());
         FileUtils.createPath(userPath);
 
-
         Path keyPath = userPath.resolve(PUBLIC_KEY_NAME);
 
         Files.write(keyPath, content);
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPublicKeyPath(user.getId() + "/" + PUBLIC_KEY_NAME);
         userRepository.save(user);
-    }   
+    }
 
     @Override
     public boolean removeUser(Long UserId) throws IOException, InvalidPublicKeyException {
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
         KeyUtils.deleteDirectory(userPath.toFile());
         userRepository.delete(optionalUser.get());
-        
+
         return true;
     }
 }

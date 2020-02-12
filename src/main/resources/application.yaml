@@ -32,6 +32,6 @@ management:
   endpoints:
     web:
       exposure:
-        include: "env, metrics"
+        include: "env, metrics, health, info"
 
     

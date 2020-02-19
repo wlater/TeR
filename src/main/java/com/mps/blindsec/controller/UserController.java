@@ -40,7 +40,7 @@ public class UserController {
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) {
 
         if (userRepository.existsByEmail(userDTO.getEmail()))
-            return HttpUtils.badRequest("This email is already taken");
+            return HttpUtils.badRequest("This email its already in use");
         User user = userService.register(UserMapper.toUser(userDTO));
         return ResponseEntity.ok(UserMapper.toUserDto(user));
 

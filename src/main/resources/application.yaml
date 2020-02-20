@@ -33,5 +33,10 @@ management:
     web:
       exposure:
         include: "env, metrics, health, info"
-
-    
+        
+#Envirements variables
+environments:
+  dev:
+    PUBLIC_KEY_NAME: pkey.der
+    ACTUAL_STORAGE_PATH: ./keys
+    SALT: jajaba

@@ -1,7 +1,13 @@
 package com.mps.blindsec.utils;
 
+import com.mps.blindsec.config.ConfigurationVariables;
 import com.mps.blindsec.model.User;
 import com.mps.blindsec.service.UserService;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
+
+import lombok.var;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +25,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+@ConstructorBinding
+@ConfigurationProperties(prefix = "environments.dev")
 public class KeyUtils {
-    public static final String SALT = "jajaba";
+    // public static var SALT = SecurityConfig.SALT;  
+    public static String SALT = "jajaba";  
 
     public static byte[] readFileBytes(String filename) throws IOException {
         Path path = Paths.get(filename);
@@ -65,6 +74,7 @@ public class KeyUtils {
     }
 
     public static String hashingPassword(String password) {
+        System.out.println(SALT);
         String saltedPassword = SALT + password;
         String hashedPassword = generateHash(saltedPassword);
         return hashedPassword;

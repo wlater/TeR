@@ -1,16 +1,14 @@
 package com.mps.blindsec.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.ZonedDateTime;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @Accessors(chain = true)
 @Entity

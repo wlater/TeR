@@ -4,6 +4,7 @@ import com.mps.blindsec.config.ConfigurationVariables;
 import com.mps.blindsec.model.User;
 import com.mps.blindsec.service.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
@@ -11,14 +12,13 @@ import lombok.var;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -26,9 +26,13 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 @ConstructorBinding
-@ConfigurationProperties(prefix = "environments.dev")
+@ConfigurationProperties("ConfigurationVariables")
 public class KeyUtils {
-    // public static var SALT = SecurityConfig.SALT;  
+    
+    @Autowired
+    private static ConfigurationVariables configVariables;
+
+    //public static var SALT = configVariables.getSALT();
     public static String SALT = "jajaba";  
 
     public static byte[] readFileBytes(String filename) throws IOException {
@@ -49,13 +53,6 @@ public class KeyUtils {
         return keyFactory.generatePublic(publicSpec);
     }
 
-    public static PrivateKey readPrivateKey(String filename)
-            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(readFileBytes(filename));
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePrivate(keySpec);
-    }
-
     public static boolean isKeyValid(User user) {
         return isKeyValid(keyFromUser(user));
     }
@@ -74,7 +71,6 @@ public class KeyUtils {
     }
 
     public static String hashingPassword(String password) {
-        System.out.println(SALT);
         String saltedPassword = SALT + password;
         String hashedPassword = generateHash(saltedPassword);
         return hashedPassword;
@@ -113,14 +109,6 @@ public class KeyUtils {
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(plaintext);
-    }
-
-    public static String decrypt(PrivateKey key, byte[] ciphertext)
-            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
-            BadPaddingException, UnsupportedEncodingException {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        return new String(cipher.doFinal(ciphertext), "UTF8");
     }
 
 }

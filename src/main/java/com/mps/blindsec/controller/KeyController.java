@@ -1,20 +1,12 @@
 package com.mps.blindsec.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.validation.constraints.NotNull;
 
 import com.mps.blindsec.model.User;
 import com.mps.blindsec.service.KeyService;
 import com.mps.blindsec.service.UserService;
-import com.mps.blindsec.utils.KeyUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,21 +33,5 @@ public class KeyController {
         encrypMessage = keyService.encrypt(textToEncrypt, user);
         return ResponseEntity.ok(encrypMessage);
     }
-    /**
-     * ! NEED TO BE DONE ON CLIENT SIDE ONLY, CUZ WE SHOULDNT HOLD A PrivateKey OBJECT ON THE SEVER SIDE
-     * TODO: CHANGE IT TO MultipartFile
-     * @param textToDecrypt
-     * @param privateKey
-     * @return String
-     */
-    @GetMapping
-	public ResponseEntity<String> decrypt(@RequestParam("text") @NotNull byte[] textToDecrypt, @RequestParam("file") @NotNull PrivateKey privateKey){
-        try {
-            return ResponseEntity.ok(KeyUtils.decrypt(privateKey, textToDecrypt));
-		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
-				| BadPaddingException | IOException e) {
-            System.err.println(e);
-        }
-        return null;
-	}    
+
 }

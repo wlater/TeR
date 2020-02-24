@@ -14,6 +14,10 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
+    /**
+     * !Não está sendo utilizado no momento
+     */
+
     private String SECRET_KEY = "naojajaba";
 
     public String extractUsername(String token) {

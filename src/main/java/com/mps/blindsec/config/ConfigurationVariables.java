@@ -1,17 +1,20 @@
 package com.mps.blindsec.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.var;
 
-@ConstructorBinding
-@ConfigurationProperties(prefix = "environments.dev")
+@ConfigurationProperties
 @Data
+@NoArgsConstructor
 public class ConfigurationVariables{
-    public static var PUBLIC_KEY_NAME;
-    public static var ACTUAL_STORAGE_PATH;
-    public static var SALT;
+
+    private var PUBLIC_KEY_NAME;
+
+    private var ACTUAL_STORAGE_PATH;
+    
+    private var SALT;
 
 }

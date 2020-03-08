@@ -1,14 +1,10 @@
 package com.mps.blindsec.utils;
 
-import com.mps.blindsec.config.ConfigurationVariables;
 import com.mps.blindsec.model.User;
-import com.mps.blindsec.service.UserService;
+import com.mps.blindsec.service.UserServiceImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
-
-import lombok.var;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,29 +14,30 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-@ConstructorBinding
-@ConfigurationProperties("ConfigurationVariables")
+@Component
 public class KeyUtils {
-    
-    @Autowired
-    private static ConfigurationVariables configVariables;
 
-    //public static var SALT = configVariables.getSALT();
-    public static String SALT = "jajaba";  
+    @Value("${environments.dev.PUBLIC_KEY_NAME}")
+    public String PUBLIC_KEY_NAME;
+    
+    @Value("${environments.dev.ACTUAL_STORAGE_PATH}")
+	public String ACTUAL_STORAGE_PATH;
+    
+    @Value("${environments.dev.SALT}")
+    public String SALT;
 
     public static byte[] readFileBytes(String filename) throws IOException {
         Path path = Paths.get(filename);
         return Files.readAllBytes(path);
     }
 
-    public static PublicKey readPublicKey(User user)
+    public PublicKey readPublicKey(User user)
             throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
         Path key = keyFromUser(user);
         return readPublicKey(key.toAbsolutePath().toString());
@@ -53,7 +50,7 @@ public class KeyUtils {
         return keyFactory.generatePublic(publicSpec);
     }
 
-    public static boolean isKeyValid(User user) {
+    public boolean isKeyValid(User user) {
         return isKeyValid(keyFromUser(user));
     }
 
@@ -66,11 +63,11 @@ public class KeyUtils {
         return true;
     }
 
-    public static Path keyFromUser(User user) {
-        return Paths.get(UserService.ACTUAL_STORAGE_PATH, user.getId().toString(), UserService.PUBLIC_KEY_NAME);
+    public Path keyFromUser(User user) {
+        return Paths.get(ACTUAL_STORAGE_PATH, user.getId().toString(), PUBLIC_KEY_NAME);
     }
 
-    public static String hashingPassword(String password) {
+    public String hashingPassword(String password) {
         String saltedPassword = SALT + password;
         String hashedPassword = generateHash(saltedPassword);
         return hashedPassword;

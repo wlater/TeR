@@ -1,5 +1,6 @@
 package com.mps.blindsec.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,12 +20,15 @@ import com.mps.blindsec.utils.KeyUtils;
 @Component
 public class KeyServiceImpl implements KeyService {
 
+    @Autowired
+    private KeyUtils keyUtils;
+
     @Override
     public byte[] encrypt(String textToEncrypt, User user) throws UnsupportedEncodingException {
         PublicKey pkey;
         byte[] plainText = textToEncrypt.getBytes("UTF8");
             try {
-                pkey = KeyUtils.readPublicKey(user);
+                pkey = keyUtils.readPublicKey(user);
                 return KeyUtils.encrypt(plainText, pkey);
             } catch (InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
                 e.printStackTrace();

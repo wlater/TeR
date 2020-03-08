@@ -6,8 +6,6 @@ import com.mps.blindsec.exceptions.InvalidPublicKeyException;
 import com.mps.blindsec.model.User;
 
 public interface UserService {
-    String PUBLIC_KEY_NAME = "pkey.der";
-    String ACTUAL_STORAGE_PATH = "./keys";
 
     User register(User user);
     User findUserByEmail(String email);

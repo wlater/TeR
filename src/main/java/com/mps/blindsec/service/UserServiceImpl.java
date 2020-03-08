@@ -19,13 +19,17 @@ import com.mps.blindsec.utils.KeyUtils;
 
 @Component
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private KeyUtils keyUtils;
+    
     @Override
     public User register(User user) {
         ZonedDateTime date = ZonedDateTime.now(ZoneId.systemDefault());
-        user.setPasswordHash(KeyUtils.hashingPassword(user.getPasswordHash()));
+        user.setPasswordHash(keyUtils.hashingPassword(user.getPasswordHash()));
         user.setCreated(date);
         return userRepository.save(user);
     }
@@ -49,13 +53,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePublicKey(User user, byte[] content) throws InvalidPublicKeyException, IOException {
 
-        Path storagePath = Paths.get(ACTUAL_STORAGE_PATH);
+        Path storagePath = Paths.get(keyUtils.ACTUAL_STORAGE_PATH);
         FileUtils.createPath(storagePath);
 
         Path userPath = storagePath.resolve(user.getId().toString());
         FileUtils.createPath(userPath);
 
-        Path keyPath = userPath.resolve(PUBLIC_KEY_NAME);
+        Path keyPath = userPath.resolve(keyUtils.PUBLIC_KEY_NAME);
 
         Files.write(keyPath, content);
 
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPublicKeyException(keyPath.toString());
         }
 
-        user.setPublicKeyPath(user.getId() + "/" + PUBLIC_KEY_NAME);
+        user.setPublicKeyPath(user.getId() + "/" + keyUtils.PUBLIC_KEY_NAME);
         userRepository.save(user);
     }
 

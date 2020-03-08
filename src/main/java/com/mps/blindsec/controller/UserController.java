@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
-
+    
     @Autowired
     private UserService userService;
 
@@ -49,7 +49,6 @@ public class UserController {
     @GetMapping("/")
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") @NotNull String email) {
         User user = userService.findUserByEmail(email);
-
         if (user == null)
             return HttpUtils.notFound("Email " + email + " not found");
 
@@ -58,6 +57,7 @@ public class UserController {
 
     @GetMapping("/getName")
     public ResponseEntity<UserDTO> getUserByName(@RequestParam("name") @NotNull String name) {
+
         User user = userService.findUserByName(name);
         if (user == null)
             return HttpUtils.notFound("Username " + name + " not found");

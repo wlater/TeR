@@ -21,7 +21,6 @@ logging:
 server:
   port: 3001
 
-
 #Actuator setup.
 management:
   endpoint:

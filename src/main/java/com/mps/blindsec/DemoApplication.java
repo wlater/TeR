@@ -1,7 +1,5 @@
 package com.mps.blindsec;
 
-import com.mps.blindsec.config.ConfigurationVariables;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

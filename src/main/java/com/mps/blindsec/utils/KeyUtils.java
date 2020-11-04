@@ -1,13 +1,13 @@
 package com.mps.blindsec.utils;
 
 import com.mps.blindsec.model.User;
-import com.mps.blindsec.service.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

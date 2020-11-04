@@ -8,7 +8,7 @@ spring:
     properties:
       hibernate.jdbc.lob.non_contextual_creation: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/v4h_preservation
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: admin

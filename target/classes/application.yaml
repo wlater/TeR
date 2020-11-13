@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: ter-service
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: POSTGRESQL
@@ -14,12 +16,13 @@ spring:
     password: admin
   jackson:
     time-zone: America/Sao_Paulo
+
 logging:
   level:
     ROOT: INFO
 
 server:
-  port: 3001
+  port: 3030
 
 #Actuator setup.
 management:

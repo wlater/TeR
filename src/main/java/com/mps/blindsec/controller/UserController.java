@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +47,8 @@ public class UserController {
 
     }
 
-    @GetMapping("/")
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("email") @NotNull String email) {
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") @NotNull String email) {
         User user = userService.findUserByEmail(email);
         if (user == null)
             return HttpUtils.notFound("Email " + email + " not found");
@@ -55,8 +56,8 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toUserDto(userService.findUserByEmail(email)));
     }
 
-    @GetMapping("/getName")
-    public ResponseEntity<UserDTO> getUserByName(@RequestParam("name") @NotNull String name) {
+    @GetMapping("/getByName/{name}")
+    public ResponseEntity<UserDTO> getUserByName(@PathVariable("name") @NotNull String name) {
 
         User user = userService.findUserByName(name);
         if (user == null)

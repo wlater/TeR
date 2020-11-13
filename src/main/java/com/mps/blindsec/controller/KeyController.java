@@ -12,9 +12,9 @@ import com.mps.blindsec.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,8 +28,8 @@ public class KeyController {
     @Autowired
     private KeyService keyService;
 
-    @GetMapping("/")
-    public ResponseEntity<byte[]> encrypt(@RequestBody @NotNull EncryptDTO textToEncrypt, @RequestParam("name") @NotNull String userName) throws UnsupportedEncodingException {
+    @GetMapping("/{name}")
+    public ResponseEntity<byte[]> encrypt(@RequestBody @NotNull EncryptDTO textToEncrypt, @PathVariable("name") @NotNull String userName) throws UnsupportedEncodingException {
         User user = userService.findUserByName(userName);
         if (user == null) return null;
         encrypMessage = keyService.encrypt(textToEncrypt, user);
